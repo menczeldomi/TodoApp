@@ -71,7 +71,7 @@ function Todo({todo, todos, setTodos, sortTodos, orderByIndex}) {
     <Card className="my-2">
       <Card.Header as="h5">
         <Row>
-          <Col> {todo.title} Index:{todo.index} <Badge pill bg="secondary">{todo.deadline}</Badge></Col>
+          <Col> {todo.title} <Badge pill bg="secondary">{todo.deadline}</Badge></Col>
         </Row>
         <Row className="my-1">
           <Col>
