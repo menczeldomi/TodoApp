@@ -21,7 +21,7 @@ function TodoList({name, todos, setTodos, sortTodos}) {
       </Card.Header>
       <Card.Body>
         {orderByIndex(sortedTodos).map((todo) => 
-            <Todo key={todo.id} todo={todo} todos={todos} setTodos={setTodos} sortTodos={sortTodos} />
+            <Todo key={todo.id} todo={todo} todos={todos} setTodos={setTodos} sortTodos={sortTodos} orderByIndex={orderByIndex} />
           )}
       </Card.Body>
     </Card>

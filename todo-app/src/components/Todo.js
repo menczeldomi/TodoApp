@@ -2,8 +2,7 @@ import React from 'react';
 import { Card, Row, Col, Button, ButtonGroup, DropdownButton, Badge, Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Todo({todo, todos, setTodos, sortTodos}) {
-  
+function Todo({todo, todos, setTodos, sortTodos, orderByIndex}) {
   function deleteTodo() {
     fetch('http://localhost:5084/api/Todo/'+todo.id, {
       method: 'DELETE',
@@ -12,37 +11,42 @@ function Todo({todo, todos, setTodos, sortTodos}) {
         'Content-Type': 'application/json'
       }
     });
-    const updatedTodos = [...todos];
+    const updatedTodos = adjustTodosIndex();
     setTodos(updatedTodos.filter(t => t.id !== todo.id));
   }
 
   function updateStatus(newStatus) {
-    const updatedTodos = [...todos];
-    updatedTodos.find(t => t.id === todo.id).index = sortTodos(newStatus).length;
-    updatedTodos.find(t => t.id === todo.id).status = newStatus;
+    const updatedTodos = adjustTodosIndex();
+    const updatedTodo = updatedTodos.find(t => t.id === todo.id);
+    updatedTodo.index = sortTodos(newStatus).length;
+    updatedTodo.status = newStatus;
     setTodos(updatedTodos);
-    //updateTodo(updatedTodo);
+    updateTodo(updatedTodo);
   }
 
   function updateIndex(newIndex) {
-    console.log(newIndex);
     if (newIndex >= 0 && newIndex <= sortTodos(todo.status).length - 1) {
       const updatedTodos = [...todos];
-      updatedTodos.find(t => t.index === newIndex).index = todo.index;
-      updatedTodos.find(t => t.id === todo.id).index = newIndex;
+      const sortedTodos = orderByIndex(sortTodos(todo.status));
+      const updatedTodo = updatedTodos.find(t => t.id === todo.id)
+      const switchedTodo = updatedTodos.find(t => t.id === sortedTodos[newIndex].id);
+      switchedTodo.index = todo.index;
+      updatedTodo.index = newIndex;
       setTodos(updatedTodos);
-      //updateTodo(updatedTodo);
+      updateTodo(updatedTodo);
+      updateTodo(switchedTodo);
     }
   }
 
   function updateTodo(updatedTodo) {
-    fetch("http://localhost:5084/api/Todo/"+todo.id, {
+    fetch("http://localhost:5084/api/Todo/"+updatedTodo.id, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
+        id: updatedTodo.id,
         index: updatedTodo.index,
         title: updatedTodo.title,
         status: updatedTodo.status,
@@ -52,11 +56,22 @@ function Todo({todo, todos, setTodos, sortTodos}) {
     })
   }
 
+  function adjustTodosIndex() {
+    const updatedTodos = [...todos];
+    const sortedTodos = orderByIndex(sortTodos(todo.status));
+    for(let i = todo.index + 1; i < sortedTodos.length; i++) {
+      let updatedTodo = updatedTodos.find(t => t.id === sortedTodos[i].id);
+      updatedTodo.index--;
+      updateTodo(updatedTodo);
+    }
+    return updatedTodos;
+  }
+
   return(
     <Card className="my-2">
       <Card.Header as="h5">
         <Row>
-          <Col> {todo.title} <Badge pill bg="secondary">{todo.deadline}</Badge></Col>
+          <Col> {todo.title} Index:{todo.index} <Badge pill bg="secondary">{todo.deadline}</Badge></Col>
         </Row>
         <Row className="my-1">
           <Col>
