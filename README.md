@@ -15,12 +15,16 @@ A `Todo` komponens felel a teendők megjelenítéséért és kezeléséért. Meg
 ### Backend
 A kéréseket kiszolgáló Web API `ASP.NET Core` segítségével készült, ami az adatbázissal `Entity Framwork`-on keresztül kommunikál. Adatbázisként `Microsoft SQL Server LocalDB`-t hozunk létre, egyszerű, relációs adattárolásra.
 Használt NuGet csomagok (a projekt létrehozásával alapból telepítetteken kívül):
+
 API-hoz:
+
 - Microsoft.EntityFrameworkCore
 - Microsoft.EntityFrameworkCore.Design
 - Microsoft.EntityFrameworkCore.Tools
 - Microsoft.EntityFrameworkCore.SqlServer
+
 Teszteléshez:
+
 - Microsoft.EntityFrameworkCore
 - Microsoft.EntityFrameworkCore.Sqlite
 #### Todo és TodoContext
@@ -42,4 +46,6 @@ npm start
 ```
 A webes felület betöltése után az alábbi oldal fogad minket:
 ![image](https://user-images.githubusercontent.com/90689246/168683608-1abee539-51db-4b80-9b9d-6cffa981a13f.png)
-Az oldal tetején található szekcióban vehetünk fel új teendő elemeket a listánkba. Megadhatjuk a nevét és határidejét (ez a két adat kötelező), a státuszát, mely lehet todo (azaz "függőben"), folyamatban, kész és inaktív, valamint mellékelhetünk opcionálisan egy leírást is. Az *Add Todo* gomb lenyomásával felvesszük az új todo-t az adatbázisba és a megfelelő oszlopban meg is fog jelenni. Minden todo elemnél láthatjuk, hogy rendelkezik négy gombbal. Az *Up* és *Down* gombok segítségével mozgathatjuk fel-le a teendőt, így állíthatjuk prioritását, valamint változtathatjuk állapotát, aminek hatására átkerül a választott állapothoz tartozó oszlopba, és ki is törölhetjük az adott elemet a *Delete* gomb megnyomásával.
+Az oldal tetején található szekcióban vehetünk fel új teendő elemeket a listánkba. Megadhatjuk a nevét és határidejét (ez a két adat kötelező), a státuszát, mely lehet todo (azaz "függőben"), folyamatban, kész és inaktív, valamint mellékelhetünk opcionálisan egy leírást is. Az *Add Todo* gomb lenyomásával felvesszük az új todo-t az adatbázisba és a megfelelő oszlopban meg is fog jelenni.
+
+Minden todo elemnél láthatjuk, hogy rendelkezik négy gombbal. Az *Up* és *Down* gombok segítségével mozgathatjuk fel-le a teendőt, így állíthatjuk prioritását, valamint változtathatjuk állapotát, aminek hatására átkerül a választott állapothoz tartozó oszlopba, és ki is törölhetjük az adott elemet a *Delete* gomb megnyomásával.
